@@ -10,6 +10,16 @@ const findUserByEmail = async (email) => {
   }
 };
 
+const findUserById = async (id) => {
+  try {
+    const user = await User.findById(id);
+    return user;
+  } catch (error) {
+    console.error("find user by email error", error);
+    return null;
+  }
+};
+
 const updateUserDetails = async (email, updatedFields) => {
   try {
     const updatedUser = await User.findOneAndUpdate(
@@ -24,4 +34,4 @@ const updateUserDetails = async (email, updatedFields) => {
   }
 };
 
-module.exports = { findUserByEmail, updateUserDetails };
+module.exports = { findUserByEmail, updateUserDetails, findUserById };

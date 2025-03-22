@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const authRouter = require("./routes/User");
+const taskRouter = require("./routes/Task");
+const { AuthMiddleware } = require("./Middleware/auth");
 dotenv.config();
 
 const app = express();
@@ -13,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/auth", authRouter);
+app.use("/api/v1", AuthMiddleware, taskRouter);
 
 const connectDB = async () => {
   mongoose.connect(process.env.MONGO_SERVER_URI);
