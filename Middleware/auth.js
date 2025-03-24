@@ -17,16 +17,16 @@ const AuthMiddleware = async (req, res, next) => {
   try {
     const bearerToken = req.headers.authorization;
     if (!bearerToken || !bearerToken?.startsWith("Bearer "))
-      return res.status(400).json({ success: false, error: "token not found" });
+      return res.status(401).json({ success: false, error: "token not found" });
     const tokenExtracted = bearerToken?.split(" ")[1];
     if (!tokenExtracted)
       return res
-        .status(400)
+        .status(401)
         .json({ success: false, error: "Token not found after Bearer" });
     const jwtTokenVerified = getIsTokenVerified(tokenExtracted);
 
     if (!jwtTokenVerified)
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
         error: "Invalid or expired token found",
       });
@@ -54,7 +54,7 @@ const AuthMiddleware = async (req, res, next) => {
     next();
   } catch (error) {
     console.error("auth middleware error", error);
-    return res.status(400).json({
+    return res.status(401).json({
       success: false,
       error: "Something went wrong while authorizing user",
     });
